@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newsfeedver3/style.dart';
 
 class AboutUsPage extends StatefulWidget {
   @override
@@ -8,6 +9,10 @@ class AboutUsPage extends StatefulWidget {
 class _AboutUsPageState extends State<AboutUsPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('about_us_page'));
+    return Center(
+        child: Text(
+      'about_us_page',
+      style: TextStyle(fontFamily: regularFont),
+    ));
   }
 }
