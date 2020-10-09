@@ -21,23 +21,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.highlight),
-              title: Text('トップニュース')),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              title: Text('ニュース一覧')),
-          BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.angellist),
-              title: Text('このアプリについて')),
-        ],
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
+    return SafeArea(
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.highlight),
+                title: Text('トップニュース')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.list),
+                title: Text('ニュース一覧')),
+            BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.angellist),
+                title: Text('このアプリについて')),
+          ],
+          currentIndex: _currentIndex,
+          onTap: _onItemTapped,
+        ),
+        body: _pages[_currentIndex],
       ),
-      body: _pages[_currentIndex],
     );
   }
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchBarPart extends StatelessWidget {
-  SearchBarPart(this.onSearch,this.errorText);
+  SearchBarPart({@required this.onSearch,this.errorText});
 
   final ValueChanged<String> onSearch;
   final TextEditingController _textEditingController = TextEditingController();
