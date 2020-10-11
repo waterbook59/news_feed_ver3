@@ -18,7 +18,7 @@ class _$NewsApiService extends NewsApiService {
 
   @override
   Future<Response<dynamic>> getHeadLineNews(
-      {String country = 'ja',
+      {String country = 'jp',
       int pageSize = 10,
       String apiKey = NewsApiService.apiKey}) {
     final $url = '/top-headlines';
@@ -33,7 +33,7 @@ class _$NewsApiService extends NewsApiService {
 
   @override
   Future<Response<dynamic>> getKeywordNews(
-      {String country = 'ja',
+      {String country = 'jp',
       String q,
       int pageSize = 30,
       String apiKey = NewsApiService.apiKey}) {
@@ -50,7 +50,7 @@ class _$NewsApiService extends NewsApiService {
 
   @override
   Future<Response<dynamic>> getCategoryNews(
-      {String country = 'ja',
+      {String country = 'jp',
       String category,
       int pageSize = 30,
       String apiKey = NewsApiService.apiKey}) {

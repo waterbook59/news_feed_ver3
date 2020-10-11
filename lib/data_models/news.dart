@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsfeedver3/data_models/article.dart';
 
-class News{
+class News {
   final String status;
   final int totalResults;
   final List<Article> articles;
@@ -41,7 +41,7 @@ class News{
     int totalResults,
     List<Article> articles,
   }) {
-    return new News(
+    return  News(
       status: status ?? this.status,
       totalResults: totalResults ?? this.totalResults,
       articles: articles ?? this.articles,
@@ -57,10 +57,17 @@ class News{
   }
 
   factory News.fromMap(Map<String, dynamic> map) {
-    return new News(
+    return  News(
       status: map['status'] as String,
       totalResults: map['totalResults'] as int,
-      articles: map['articles'] as List<Article>,
+      //articles: map['articles'] as List<Article>,
+      // 上のそのままの変換はできなくて、
+      //たぶん対象のJsonレスポンスは List<Map<String, dynamic>>になってるので、
+      // Map<String, dynamic>にループして変換させる必要がある
+      articles: (map['articles'] as List)
+          ?.map((e) =>
+              e == null ? null : Article.fromMap(e as Map<String, dynamic>))
+          ?.toList(),
     );
   }
 

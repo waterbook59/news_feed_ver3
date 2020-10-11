@@ -16,6 +16,7 @@ class NewsListViewModel extends ChangeNotifier {
   Category _category = categories[0];
   Category get category => _category;
 
+  //todo カプセル化
   bool isProcessing = false;
   List<Article> _articles = <Article>[];
 
@@ -32,9 +33,17 @@ class NewsListViewModel extends ChangeNotifier {
     _category = category;
 
    _articles= await _newsRepository.getNews(searchType,keyword,category);
+   print('getNews:${_articles[0].title}');
 
     //todo リストが空の場合の条件分岐
     isProcessing =false;
     notifyListeners();
+  }
+
+  //repositoryで破棄と同じようにviewModelでも破棄
+@override
+  void dispose() {
+    _newsRepository.dispose();
+    super.dispose();
   }
 }
