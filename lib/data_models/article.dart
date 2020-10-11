@@ -84,7 +84,7 @@ final String content;
   }
 
   factory Article.fromMap(Map<String, dynamic> map) {
-    return new Article(
+    return  new Article(
       title: map['title'] as String,
       description: map['description'] as String,
       url: map['url'] as String,

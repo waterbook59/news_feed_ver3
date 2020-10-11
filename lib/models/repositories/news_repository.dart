@@ -7,15 +7,16 @@ import 'package:newsfeedver3/models/networking/news_api_service.dart';
 import 'package:newsfeedver3/utils/constants.dart';
 
 class NewsRepository {
-//  NewsRepository({NewsApiService newsApiService})
-//      :_newsApiService = newsApiService;
-//  final NewsApiService _newsApiService;
-
   //news_api_service内のstaticなNewsApiService.createメソッドを使うことで、
   // サーバーへHTTPリクエストするbaseUrlやapiKeyの下準備設定まで完了
-  //todo staticなのでDI必要なし？？
 
-  final NewsApiService _apiService = NewsApiService.create();
+  //DiのときはApiService.createはいらなくて、providersの中で実行
+  NewsRepository({NewsApiService newsApiService})
+      :_newsApiService = newsApiService;
+  final NewsApiService _newsApiService;
+
+  //DIなし
+//  final NewsApiService _apiService = NewsApiService.create();
 
 
   //chopperへ投げる
@@ -25,28 +26,28 @@ class NewsRepository {
     // ＠Getのメソッドに対して、クエリで入力してないもの(キーワードやカテゴリ)を渡す
 
     Response response;
-    List<Article> result = <Article>[];
+    var result = <Article>[];
 
     //try-catchで成功、レスポンス返ってきたけど失敗、レスポンス返ってこないの3パターン
     try {
       switch (searchType) {
         case SearchType.headline:
-          response = await _apiService.getHeadLineNews();
+          response = await _newsApiService.getHeadLineNews();
           break;
         case SearchType.keywordSearch:
-          response = await _apiService.getKeywordNews(q: keyword);
+          response = await _newsApiService.getKeywordNews(q: keyword);
           break;
         case SearchType.categorySearch:
         //カテゴリーをクエリへ投げる時は英文字で
           response =
-          await _apiService.getCategoryNews(category: category.nameEn);
+          await _newsApiService.getCategoryNews(category: category.nameEn);
           break;
       }
       //NewsApiServiceのメソッドを使って返ってくるのは戻り値Responseクラス(json形式)なので、
       // fromJsonメソッド使ってresponse.bodyのarticlesだけをList<Article>として格納する
       if(response.isSuccessful){
         //response.bodyがdynamicなので、Map型へ変換する必要あり?
-        //=>analysis_options.yamlの条件緩めるとエラーなし
+        //=>analysis_options.yamlの暗黙的型変換の条件緩めるとエラーなし
         final responseBody = response.body;
         //json_serializableではなく、DartDataClass使用
         result = News.fromMap(responseBody).articles;

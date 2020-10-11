@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:newsfeedver3/di/providers.dart';
 import 'package:newsfeedver3/style.dart';
 import 'package:newsfeedver3/views/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: globalProviders,
+      child:MyApp() ,
+    ),
+      );
 }
 
 class MyApp extends StatelessWidget {
