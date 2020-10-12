@@ -6,6 +6,7 @@ class SearchBarPart extends StatelessWidget {
 
   final ValueChanged<String> onSearch;
   final TextEditingController _textEditingController = TextEditingController();
+  //todo errorText表示
   final String errorText;
 
   @override

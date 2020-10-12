@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:newsfeedver3/data_models/article.dart';
 import 'package:newsfeedver3/data_models/category.dart';
 import 'package:newsfeedver3/utils/constants.dart';
 import 'package:newsfeedver3/view_models/news_list_view_model.dart';
@@ -14,13 +15,13 @@ class NewsListPage extends StatelessWidget {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     //ページを開いた時にカテゴリー総合でデータ取得
 //    if (!viewModel.isProcessing && viewModel.articles.isEmpty) {
-      Future(() {
-        print('ページを開いた時にカテゴリー総合でデータ取得');
-        return viewModel.getNews(
-            searchType: SearchType.categorySearch,
-            category: categories[0],
-          );
-      });
+    Future(() {
+      print('ページを開いた時にカテゴリー総合でデータ取得');
+      return viewModel.getNews(
+        searchType: SearchType.categorySearch,
+        category: categories[0],
+      );
+    });
 //    }
 
     return Scaffold(
@@ -36,28 +37,25 @@ class NewsListPage extends StatelessWidget {
                   getCategoryNews(context, selectedCategory),
             ),
             Expanded(
-              child: Consumer<NewsListViewModel>(
-                  builder: (context, model, child) {
-                    print('Consumer通ったよ');
+              child:
+                  Consumer<NewsListViewModel>(builder: (context, model, child) {
+                print('Consumer通ったよ');
                 return model.isProcessing
                     ? const Center(child: CircularProgressIndicator())
-                //ListView.builderはwidget分割して外に出すとエラーになってしまうので、ここに記載すること！！
+                    //ListView.builderはwidget分割して外に出すとエラーになってしまうので、ここに記載すること！！
                 //ページ開いた時にConsumer１度まわるのでここでFuture.Builderしたら冒頭のgetNewsいらない？？
-                //開いた時：カテゴリ総合でgetNews、それ以外:NewsItem
-                //=>引数SearchTypeの場合わけがめんどくさそうなので、冒頭で開いた時に限定してgetNews
+                    //開いた時：カテゴリ総合でgetNews、それ以外:NewsItem
+                    //=>引数SearchTypeの場合わけがめんどくさそうなので、冒頭で開いた時に限定してgetNews
                     : ListView.builder(
-                    itemCount:model.articles.length,
-                    itemBuilder:(context,int index){
-                      return NewsItem(
-                        eachArticle: model.articles[index],
-                      );
-                    }
-                );
-
-
-
-
-
+                        itemCount: model.articles.length,
+                        itemBuilder: (context, int index) {
+                          return NewsItem(
+                            eachArticle: model.articles[index],
+                            //todo タップでwebページへ
+                            onArticleTapped: (article) =>
+                                _openWebPage(context, article),
+                          );
+                        });
               }),
             ),
           ],
@@ -70,7 +68,7 @@ class NewsListPage extends StatelessWidget {
     );
   }
 
-  //todo 記事更新 同じ検索処理を行う用にviewModel層にgetNewsの引数をプロパティとして設定
+  //記事更新 同じ検索処理を行う用にviewModel層にgetNewsの引数をプロパティとして設定
   Future<void> onRefreshed(BuildContext context) async {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
@@ -80,7 +78,7 @@ class NewsListPage extends StatelessWidget {
     );
   }
 
-  //todo キーワード検索(keywordはSearchBarに入力した文字)
+  //キーワード検索(keywordはSearchBarに入力した文字)
   Future<void> getKeywordNews(BuildContext context, String keyword) async {
     print('keyword:$keyword');
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
@@ -89,12 +87,17 @@ class NewsListPage extends StatelessWidget {
         searchType: SearchType.keywordSearch, keyword: keyword);
   }
 
-  //todo カテゴリ検索
-  Future<void> getCategoryNews(BuildContext context,
-      Category selectedCategory) async {
+  //カテゴリ検索
+  Future<void> getCategoryNews(
+      BuildContext context, Category selectedCategory) async {
     print('selectedCategory:${selectedCategory.nameJp}');
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
     await viewModel.getNews(
         searchType: SearchType.categorySearch, category: selectedCategory);
+  }
+
+  //todo タップでwebページへ
+  void _openWebPage(BuildContext context, Article article) {
+    print('ページ開くよ：${article.url}');
   }
 }
