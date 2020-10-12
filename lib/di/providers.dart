@@ -1,5 +1,6 @@
 import 'package:newsfeedver3/models/networking/news_api_service.dart';
 import 'package:newsfeedver3/models/repositories/news_repository.dart';
+import 'package:newsfeedver3/view_models/head_line_view_model.dart';
 import 'package:newsfeedver3/view_models/news_list_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -27,11 +28,17 @@ List<SingleChildWidget> dependentModels = [
     update: (_, newsApiService, repository) =>
         NewsRepository(newsApiService: newsApiService),
   ),
+
 ];
 
 List<SingleChildWidget> viewModels =[
   ChangeNotifierProvider<NewsListViewModel>(
     create: (context)=> NewsListViewModel(
+      repository:Provider.of<NewsRepository>(context, listen: false),
+    ),
+  ),
+  ChangeNotifierProvider<HeadLineViewModel>(
+    create: (context)=> HeadLineViewModel(
       repository:Provider.of<NewsRepository>(context, listen: false),
     ),
   ),

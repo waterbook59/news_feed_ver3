@@ -11,13 +11,11 @@ class ArticleDesc extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    //descriptionがnullの場合、除外しないと落ちるのでnullじゃない場合のみ描画
+    //descriptionがnullの場合があり、除外しないと落ちるのでnullじゃない場合のみ描画
     var description='';
     if(eachArticle.description !=null){
       description =eachArticle.description;
     }
-
-
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

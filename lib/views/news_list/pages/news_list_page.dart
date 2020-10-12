@@ -13,8 +13,9 @@ class NewsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
-    //ページを開いた時にカテゴリー総合でデータ取得
-//    if (!viewModel.isProcessing && viewModel.articles.isEmpty) {
+    //ページを開いた時にカテゴリー総合でデータ取得 処理中でない且つisEmptyの時だけ取得
+    //この条件を入れることで、ページ遷移する時にチラッと映らない
+    if (!viewModel.isProcessing && viewModel.articles.isEmpty) {
     Future(() {
       print('ページを開いた時にカテゴリー総合でデータ取得');
       return viewModel.getNews(
@@ -22,7 +23,7 @@ class NewsListPage extends StatelessWidget {
         category: categories[0],
       );
     });
-//    }
+    }
 
     return Scaffold(
       body: Padding(

@@ -36,7 +36,10 @@ class NewsListViewModel extends ChangeNotifier {
     notifyListeners();
 
 
-   _articles= await _newsRepository.getNews(searchType,keyword,category);
+   _articles= await _newsRepository.getNews(
+       searchType:searchType,
+       keyword:keyword,
+       category:category);
    print('getNews:${_articles[0].title}');
 
     //todo リストが空の場合の条件分岐は...repositoryでやってる感じ?
