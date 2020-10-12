@@ -16,27 +16,31 @@ class NewsListViewModel extends ChangeNotifier {
   Category _category = categories[0];
   Category get category => _category;
 
-  //todo カプセル化
-  bool isProcessing = false;
+
+  bool _isProcessing = false;
+  bool get isProcessing => _isProcessing;
   List<Article> _articles = <Article>[];
+  List<Article> get articles => _articles;
 
   Future<void> getNews(
       {@required SearchType searchType,
       String keyword,
       Category category}) async {
 
-    isProcessing= true;
-    notifyListeners();
     //記事更新用に入ってきた条件をセット
     _searchType=searchType;
     _keyword = keyword;
     _category = category;
 
+    _isProcessing= true;
+    notifyListeners();
+
+
    _articles= await _newsRepository.getNews(searchType,keyword,category);
    print('getNews:${_articles[0].title}');
 
     //todo リストが空の場合の条件分岐
-    isProcessing =false;
+    _isProcessing =false;
     notifyListeners();
   }
 

@@ -42,7 +42,7 @@ class NewsRepository {
         //カテゴリーをクエリへ投げる時は英文字で
           response =
           await _newsApiService.getCategoryNews(category: category.nameEn);
-          print('カテゴリ検索のresponse.body[articles]:${response.body['articles']}');
+          print('カテゴリ検索のカテゴリ:${category.nameEn}とresponse.body[articles]:${response.body['articles']}');
           break;
       }
       //NewsApiServiceのメソッドを使って返ってくるのは戻り値Responseクラス(json形式)なので、
@@ -69,7 +69,7 @@ class NewsRepository {
   }
 //try-catchが終わったらNewsApiServiceのdisposeメソッド実行
 //viewModelでもrepository.disposeを行う,globalProviderにあるからいらない？？
-dispose(){
+void dispose(){
     _newsApiService.dispose();
 }
 

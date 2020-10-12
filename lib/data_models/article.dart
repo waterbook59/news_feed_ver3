@@ -62,7 +62,7 @@ final String content;
     String publishedAt,
     String content,
   }) {
-    return new Article(
+    return  Article(
       title: title ?? this.title,
       description: description ?? this.description,
       url: url ?? this.url,
@@ -84,7 +84,7 @@ final String content;
   }
 
   factory Article.fromMap(Map<String, dynamic> map) {
-    return  new Article(
+    return  Article(
       title: map['title'] as String,
       description: map['description'] as String,
       url: map['url'] as String,

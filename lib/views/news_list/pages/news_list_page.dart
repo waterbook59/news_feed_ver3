@@ -4,12 +4,25 @@ import 'package:newsfeedver3/data_models/category.dart';
 import 'package:newsfeedver3/utils/constants.dart';
 import 'package:newsfeedver3/view_models/news_list_view_model.dart';
 import 'package:newsfeedver3/views/news_list/components/category_chips_part.dart';
+import 'package:newsfeedver3/views/news_list/components/news_item.dart';
 import 'package:newsfeedver3/views/news_list/components/search_bar_pat.dart';
 import 'package:provider/provider.dart';
 
 class NewsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
+    //ページを開いた時にカテゴリー総合でデータ取得
+//    if (!viewModel.isProcessing && viewModel.articles.isEmpty) {
+      Future(() {
+        print('ページを開いた時にカテゴリー総合でデータ取得');
+        return viewModel.getNews(
+            searchType: SearchType.categorySearch,
+            category: categories[0],
+          );
+      });
+//    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -22,8 +35,31 @@ class NewsListPage extends StatelessWidget {
               onSelectedCategory: (selectedCategory) =>
                   getCategoryNews(context, selectedCategory),
             ),
-//          NewsItem(),
-            const Expanded(child: Center(child: CircularProgressIndicator())),
+            Expanded(
+              child: Consumer<NewsListViewModel>(
+                  builder: (context, model, child) {
+                    print('Consumer通ったよ');
+                return model.isProcessing
+                    ? const Center(child: CircularProgressIndicator())
+                //ListView.builderはwidget分割して外に出すとエラーになってしまうので、ここに記載すること！！
+                //ページ開いた時にConsumer１度まわるのでここでFuture.Builderしたら冒頭のgetNewsいらない？？
+                //開いた時：カテゴリ総合でgetNews、それ以外:NewsItem
+                //=>引数SearchTypeの場合わけがめんどくさそうなので、冒頭で開いた時に限定してgetNews
+                    : ListView.builder(
+                    itemCount:model.articles.length,
+                    itemBuilder:(context,int index){
+                      return NewsItem(
+                        eachArticle: model.articles[index],
+                      );
+                    }
+                );
+
+
+
+
+
+              }),
+            ),
           ],
         ),
       ),
