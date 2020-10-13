@@ -18,7 +18,7 @@ class HeadLineViewModel extends ChangeNotifier{
   Future<void> getNews(
       {@required SearchType searchType,}) async {
 
-    //記事更新用に入ってきた条件をセット
+    //記事更新用に入ってきた条件をセット いる？？
 //    _searchType=searchType;
 
     _isProcessing= true;
@@ -38,6 +38,12 @@ class HeadLineViewModel extends ChangeNotifier{
     _isProcessing= false;
     return _articles;
 
+  }
+
+  @override
+  void dispose() {
+    _newsRepository.dispose();
+    super.dispose();
   }
 
 }
