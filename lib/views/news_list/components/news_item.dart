@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsfeedver3/data_models/article.dart';
 import 'package:newsfeedver3/style.dart';
 import 'package:newsfeedver3/views/news_list/components/article_desc.dart';
-import 'package:newsfeedver3/views/news_list/components/article_image.dart';
+import 'package:newsfeedver3/views/common_components/article_image.dart';
 
 class NewsItem extends StatelessWidget {
   const NewsItem({this.eachArticle, this.onArticleTapped});
@@ -18,6 +18,7 @@ class NewsItem extends StatelessWidget {
       child: InkWell(
         //todo タップでwebページへ
         //valueChangeで引数入れる時は()=>fanc()はじめのかっこは必須！
+        //NewsListPageから渡されてきたeachArticleを引数に入れてそのままNewsListPageへ返すイメージ
         onTap: () => onArticleTapped(eachArticle),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

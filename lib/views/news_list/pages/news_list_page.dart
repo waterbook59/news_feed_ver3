@@ -53,6 +53,7 @@ class NewsListPage extends StatelessWidget {
                           return NewsItem(
                             eachArticle: model.articles[index],
                             //todo タップでwebページへ
+                        // (article)はwidget分割先から返ってきたeachArticle(元々こっちから渡した値やけど)
                             onArticleTapped: (article) =>
                                 _openWebPage(context, article),
                           );
