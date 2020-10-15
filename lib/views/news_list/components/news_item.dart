@@ -16,7 +16,7 @@ class NewsItem extends StatelessWidget {
       //CardはListView.builderの下におく！！
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: InkWell(
-        //todo タップでwebページへ
+        // タップでwebページへ
         //valueChangeで引数入れる時は()=>fanc()はじめのかっこは必須！
         //NewsListPageから渡されてきたeachArticleを引数に入れてそのままNewsListPageへ返すイメージ
         onTap: () => onArticleTapped(eachArticle),

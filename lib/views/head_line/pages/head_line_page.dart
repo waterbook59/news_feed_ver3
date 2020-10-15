@@ -4,6 +4,7 @@ import 'package:newsfeedver3/utils/constants.dart';
 import 'package:newsfeedver3/view_models/head_line_view_model.dart';
 import 'package:newsfeedver3/views/head_line/components/head_line_item.dart';
 import 'package:newsfeedver3/views/head_line/components/page_transformer.dart';
+import 'package:newsfeedver3/views/web_view/screen/web_view_screen.dart';
 import 'package:provider/provider.dart';
 
 class HeadLinePage extends StatelessWidget {
@@ -110,9 +111,12 @@ class HeadLinePage extends StatelessWidget {
     await viewModel.getNews(searchType: SearchType.headline);
   }
 
-  //todo タップでwebページへ
+  //タップでwebページへ
   void _openWebPage(BuildContext context, Article article) {
-    print('HeadLinePageからwebページ開くよ：${article.url}');
+//    print('HeadLinePageからwebページ開くよ：${article.url}');
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context)=>WebViewScreen(article: article,),
+    ),);
   }
 
 

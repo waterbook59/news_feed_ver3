@@ -19,6 +19,7 @@ class ArticleImage extends StatelessWidget {
         imageUrl: imageUrl,
         //ここ入れないとHeadLineItemで使うとき拡大しない！！！
         fit: BoxFit.cover,
+
         //todo imageBuilder使うと画像出ないので使い方確認した方が良い
 //        imageBuilder: (context,imageProvider)=> Container(
 //          decoration: BoxDecoration(

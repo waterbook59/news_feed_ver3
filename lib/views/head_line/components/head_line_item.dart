@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsfeedver3/data_models/article.dart';
 import 'package:newsfeedver3/views/common_components/article_image.dart';
-import 'package:newsfeedver3/views/head_line/components/laze_load_text.dart';
+import 'package:newsfeedver3/views/head_line/components/lazy_load_text.dart';
 import 'package:newsfeedver3/views/head_line/components/page_transformer.dart';
 
 class HeadLineItem extends StatelessWidget {

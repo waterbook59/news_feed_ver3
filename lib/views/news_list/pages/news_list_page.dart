@@ -7,6 +7,7 @@ import 'package:newsfeedver3/view_models/news_list_view_model.dart';
 import 'package:newsfeedver3/views/news_list/components/category_chips_part.dart';
 import 'package:newsfeedver3/views/news_list/components/news_item.dart';
 import 'package:newsfeedver3/views/news_list/components/search_bar_pat.dart';
+import 'package:newsfeedver3/views/web_view/screen/web_view_screen.dart';
 import 'package:provider/provider.dart';
 
 class NewsListPage extends StatelessWidget {
@@ -52,7 +53,7 @@ class NewsListPage extends StatelessWidget {
                         itemBuilder: (context, int index) {
                           return NewsItem(
                             eachArticle: model.articles[index],
-                            //todo タップでwebページへ
+                            //タップでwebページへ
                         // (article)はwidget分割先から返ってきたeachArticle(元々こっちから渡した値やけど)
                             onArticleTapped: (article) =>
                                 _openWebPage(context, article),
@@ -98,8 +99,11 @@ class NewsListPage extends StatelessWidget {
         searchType: SearchType.categorySearch, category: selectedCategory);
   }
 
-  //todo タップでwebページへ
+  //タップでwebページへ
   void _openWebPage(BuildContext context, Article article) {
-    print('ページ開くよ：${article.url}');
+//    print('ページ開くよ：${article.url}');
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context)=>WebViewScreen(article: article,),
+    ),);
   }
 }
