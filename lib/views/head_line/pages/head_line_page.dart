@@ -54,7 +54,9 @@ class HeadLinePage extends StatelessWidget {
 //        );
               model.isProcessing
                   ? const Center(child: CircularProgressIndicator())
-                  : PageTransformer(//pageViewを動かすときのアクション
+              //PageTransformerはpageViewを動かすときのアクション
+              //スワイプに応じて画像の透明度を変える、画像と文字の移動速度をそれぞれ変化させる等
+                  : PageTransformer(
                 pageViewBuilder: (context, pageVisibilityResolver) {
                   return PageView.builder(
                     //表示するページをそれぞれ変えたい場合は普通のPageView
@@ -68,8 +70,8 @@ class HeadLinePage extends StatelessWidget {
                         final pageVisibility = pageVisibilityResolver
                             .resolvePageVisibility(index);
               //透明度の値に入力、pageVisibility.pagePositionは-1~1,visibleFractionは0~1
-                        final visibleFraction =
-                            pageVisibility.visibleFraction;
+                        //opacityにvisibleFractionに設定することで動きに連動して透明度が変わる
+                        final visibleFraction = pageVisibility.visibleFraction;
                         return HeadLineItem(
                           eachArticle: eachArticle,
                           onArticleTapped: (article) =>
