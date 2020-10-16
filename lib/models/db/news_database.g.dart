@@ -418,6 +418,8 @@ abstract class _$MyNewsDB extends GeneratedDatabase {
   $ArticleRecordsTable _articleRecords;
   $ArticleRecordsTable get articleRecords =>
       _articleRecords ??= $ArticleRecordsTable(this);
+  NewsDao _newsDao;
+  NewsDao get newsDao => _newsDao ??= NewsDao(this as MyNewsDB);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:moor/moor.dart';
 import 'package:moor_ffi/moor_ffi.dart';
+import 'package:newsfeedver3/models/db/news_dao.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -25,7 +26,7 @@ class ArticleRecords extends Table{
   //@UseMoorはTableの外
 //コード生成の後、
 // 1.$クラスextends, 2.スキーマバージョン設定、3.コンストラクタ設定、4.openConnectionのファンクション！作成
-  @UseMoor(tables:[ArticleRecords])
+  @UseMoor(tables:[ArticleRecords],daos: [NewsDao])
   class MyNewsDB extends _$MyNewsDB{
   MyNewsDB() : super(_openConnection());
   
