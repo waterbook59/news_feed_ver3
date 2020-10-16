@@ -1,3 +1,5 @@
+import 'package:newsfeedver3/models/db/news_dao.dart';
+import 'package:newsfeedver3/models/db/news_database.dart';
 import 'package:newsfeedver3/models/networking/news_api_service.dart';
 import 'package:newsfeedver3/models/repositories/news_repository.dart';
 import 'package:newsfeedver3/view_models/head_line_view_model.dart';
@@ -18,15 +20,20 @@ List<SingleChildWidget> independentModels = [
     //閉じる時はcloseではなく、dispose(dbはclose)
     dispose: (_, newsApiService) => newsApiService.dispose(),
   ),
+  Provider<MyNewsDB>(
+    create: (_)=>MyNewsDB(),
+    dispose: (_,db) =>db.close(),
+  ),
 ];
 
 List<SingleChildWidget> dependentModels = [
-//  ProxyProvider<MyDatabase,TasksDao>(
-//    update: (_, db, dao)=>TasksDao(db),
-//  ),
-  ProxyProvider<NewsApiService, NewsRepository>(
-    update: (_, newsApiService, repository) =>
-        NewsRepository(newsApiService: newsApiService),
+  //NewsDaoのコンストラクタのdi(引数をdbに)を下記に修正
+  ProxyProvider<MyNewsDB,NewsDao>(
+    update: (_, db, dao)=>NewsDao(db),
+  ),
+  ProxyProvider2<NewsDao,NewsApiService, NewsRepository>(
+    update: (_, newsDao,newsApiService, repository) =>
+        NewsRepository(newsDao:newsDao,newsApiService: newsApiService),
   ),
 
 ];

@@ -9,7 +9,7 @@ part 'news_dao.g.dart';
 //クエリ作成
 @UseDao(tables: [ArticleRecords])
 class NewsDao extends DatabaseAccessor<MyNewsDB> with _$NewsDaoMixin {
-  NewsDao(MyNewsDB attachedDatabase) : super(attachedDatabase);
+  NewsDao(MyNewsDB db) : super(db);
 
   //DB空にしてからapiServiceのデータを書き込む
   //１つ１つのクエリを普通に書いて、2つ以上のクエリを1つとして実行=>transaction

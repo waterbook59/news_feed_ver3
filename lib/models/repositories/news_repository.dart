@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:newsfeedver3/data_models/article.dart';
 import 'package:newsfeedver3/data_models/category.dart';
 import 'package:newsfeedver3/data_models/news.dart';
+import 'package:newsfeedver3/models/db/news_dao.dart';
 import 'package:newsfeedver3/models/networking/news_api_service.dart';
 import 'package:newsfeedver3/utils/constants.dart';
 
@@ -10,8 +11,11 @@ class NewsRepository {
   // サーバーへHTTPリクエストするbaseUrlやapiKeyの下準備設定まで完了
 
   //DiのときはApiService.createはいらなくて、providersの中で実行
-  NewsRepository({newsApiService}) : _newsApiService = newsApiService;
+  NewsRepository({newsDao,newsApiService}) :
+        _newsApiService = newsApiService,
+        _newsDao = newsDao;
   final NewsApiService _newsApiService;
+  final NewsDao _newsDao;
 
   //DIなし
 //  final NewsApiService _apiService = NewsApiService.create();
