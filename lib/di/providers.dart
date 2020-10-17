@@ -38,6 +38,8 @@ List<SingleChildWidget> dependentModels = [
 
 ];
 
+//使うたびに異なるrepositoryのインスタンスを作る必要がある場合はChangeNotifierProxyProvider使う
+//todo repositoryの修正をviewModelへ自動通知する時にChangeNotifierProxyProvider使う？
 List<SingleChildWidget> viewModels =[
   ChangeNotifierProvider<NewsListViewModel>(
     create: (context)=> NewsListViewModel(
