@@ -25,9 +25,9 @@ class HeadLineViewModel extends ChangeNotifier{
     notifyListeners();
 
     _articles= await _newsRepository.getNews(searchType: searchType);
-    print('getNews:${_articles[0].title}');
+//    print('getNews:${_articles[0].title}');
 
-    //todo リストが空の場合の条件分岐は...repositoryでやってる感じ?
+    //リストが空の場合の条件分岐は...repositoryのtry/catchでやってる
     _isProcessing =false;
     notifyListeners();
   }

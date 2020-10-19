@@ -22,6 +22,14 @@ class NewsListViewModel extends ChangeNotifier {
   List<Article> _articles = <Article>[];
   List<Article> get articles => _articles;
 
+  //validation関係
+  bool _isValidation = false;
+  bool get isValidation => _isValidation;
+  TextEditingController _keywordController= TextEditingController();
+  TextEditingController get keywordController => _keywordController;
+  String _strValidateName;
+  String get strValidateName => _strValidateName;
+
   Future<void> getNews(
       {@required SearchType searchType,
       String keyword,
@@ -35,22 +43,54 @@ class NewsListViewModel extends ChangeNotifier {
     _isProcessing= true;
     notifyListeners();
 
+      _articles= await _newsRepository.getNews(
+          searchType:searchType,
+          keyword:keyword,
+          category:category);
+//      print('getNews:${_articles[0].title}');
 
-   _articles= await _newsRepository.getNews(
-       searchType:searchType,
-       keyword:keyword,
-       category:category);
-   print('getNews:${_articles[0].title}');
+      //リストが空の場合の条件分岐は...repositoryのtry/catchでやってる
+      _isProcessing =false;
+      notifyListeners();
+//    }
 
-    //todo リストが空の場合の条件分岐は...repositoryでやってる感じ?
-    _isProcessing =false;
-    notifyListeners();
   }
 
-  //repositoryで破棄と同じようにviewModelでも破棄
+  //repositoryで破棄と同じようにviewModelでも破棄,
+  //repositoryとの違いはChangeNotifier自身がdisposeメソッド持ってる
 @override
   void dispose() {
     _newsRepository.dispose();
     super.dispose();
   }
+
+//  void setValidate() {
+//    _isValidation= true;
+//  }
+
+  Future<void> setValidateClear() {
+    _isValidation= false;
+    notifyListeners();
+  }
+
+  Future<void> validateKeyword() {
+    _isValidation= true;
+    if(_keywordController.text.isEmpty){
+      _strValidateName = 'Please input something.';
+    }else{
+      print('validateTaskName！！');
+      _strValidateName = null;
+      _isValidation= false;
+    }
+    notifyListeners();
+
+
+  }
+
+  Future<void> updateValidateKeyword() async{
+    await validateKeyword();
+    notifyListeners();
+  }
+
+
 }

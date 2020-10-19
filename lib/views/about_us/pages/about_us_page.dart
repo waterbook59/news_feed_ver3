@@ -29,23 +29,21 @@ class _AboutUsPageState extends State<AboutUsPage> {
           }),
       body: Center(
           child: AnimatedContainer(
-        width: _isSelected ? 400 : 100,
-        height: _isSelected ? 400 : 50,
-        curve: Curves.decelerate,
-        alignment: _isSelected ? Alignment.bottomCenter : Alignment.topCenter,
-        duration: const Duration(milliseconds: 1000),
-        child: const AutoSizeText(
-          'about_us_page',
-          maxLines: 1,
-          style: TextStyle(
-            fontFamily: regularFont,
-            fontSize: 100
-          ),
-          minFontSize: 10,
+            width: _isSelected ? 400 : 100,
+            height: _isSelected ? 400 : 50,
+            curve: Curves.decelerate,
+            alignment: _isSelected ? Alignment.bottomCenter : Alignment
+                .topCenter,
+            duration: const Duration(milliseconds: 1000),
+            child: const AutoSizeText(
+              'about_us_page',
+              maxLines: 1,
+              style: TextStyle(fontFamily: regularFont, fontSize: 100),
+              minFontSize: 10,
 //          maxFontSize: 100,
-          overflow: TextOverflow.visible,
-        ),
-      )),
+              overflow: TextOverflow.visible,
+            ),
+          )),
     );
   }
 }

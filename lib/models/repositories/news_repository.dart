@@ -46,8 +46,8 @@ class NewsRepository {
           //カテゴリーをクエリへ投げる時は英文字(nameEn)で
           response =
               await _newsApiService.getCategoryNews(category: category.nameEn);
-          print('カテゴリ検索のカテゴリ:${category.nameEn}と'
-              'response.body[articles]:${response.body['articles']}');
+//          print('カテゴリ検索のカテゴリ:${category.nameEn}と'
+//              'response.body[articles]:${response.body['articles']}');
           break;
       }
 //NewsApiServiceのメソッドを使って返ってくるのは戻り値Responseクラス(json形式)なので、

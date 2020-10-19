@@ -24,7 +24,7 @@ class HeadLinePage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(8),
           child: Consumer<HeadLineViewModel>(builder: (context, model, child) {
-            print('Consumer通ったよ');
+//            print('Consumer通ったよ');
             return
 //FutureBuilder使うとページ切替時に再読み込みされる
 //          FutureBuilder(
@@ -79,19 +79,6 @@ class HeadLinePage extends StatelessWidget {
                               _openWebPage(context, article),
                           pageVisibility: pageVisibility,
                         );
-
-
-//                                Opacity(opacity: visibleFraction,
-//                                  child: Center(child: Container(
-//                                    color: Colors.blueGrey,
-//                                    child: Column(
-//                                      children: [
-//                                        const SizedBox(height: 20,),
-//                                        Center(child: Text(article.title)),
-//                                      ],
-//                                    ),
-//                                  ),
-//                                ),
 
                       });
                 },

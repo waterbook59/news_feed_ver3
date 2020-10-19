@@ -14,25 +14,43 @@ class NewsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
-    //ページを開いた時にカテゴリー総合でデータ取得 処理中でない且つisEmptyの時だけ取得
-    //この条件を入れることで、ページ遷移する時にチラッと映らない
-    if (!viewModel.isProcessing && viewModel.articles.isEmpty) {
-    Future(() {
-      print('ページを開いた時にカテゴリー総合でデータ取得');
-      return viewModel.getNews(
-        searchType: SearchType.categorySearch,
-        category: categories[0],
-      );
-    });
-    }
+
+    Future(() async{
+      await viewModel.setValidateClear();//再度ページ開いた時にはエラーテキスト消す
+      //ページを開いた時にカテゴリー総合でデータ取得 処理中でない且つisEmptyの時だけ取得
+      //この条件を入れることで、ページ遷移する時にチラッと映らない
+        if (!viewModel.isProcessing && viewModel.articles.isEmpty){
+        return viewModel.getNews(
+          searchType: SearchType.categorySearch,
+          category: categories[0],
+        );
+        }
+      });
+
+
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            SearchBarPart(
-              onSearch: (keyword) => getKeywordNews(context, keyword),
+            Consumer<NewsListViewModel>(
+              builder: (context, model, child) {
+                print('SearchBarPartのConsumer');
+                return
+                  //初回(テキスト完了ボタン押す時)はisValidationがtrueのままでエラー表示
+                  // 再描画時にはmodel.isValidationをfalseにしてstrをnullにしたい
+                  //FutureBuilderでSearchBarPartの描画わけすればできるかも？
+                  SearchBarPart(
+                  //onSearch実行時にvalidation実施
+                  onSearch: (keyword) => getKeywordNews(context, keyword),
+                  //テキストを結局model層へセット
+                  textEditingController: model.keywordController,
+                  errorText: model.isValidation ? model.strValidateName : null,
+                  didChanged: (updateKeyword) =>
+                      updateValidateKeyword(context, updateKeyword),
+                );
+              },
             ),
             CategoryChipsPart(
               onSelectedCategory: (selectedCategory) =>
@@ -41,11 +59,11 @@ class NewsListPage extends StatelessWidget {
             Expanded(
               child:
                   Consumer<NewsListViewModel>(builder: (context, model, child) {
-                print('Consumer通ったよ');
+//                print('Consumer通ったよ');
                 return model.isProcessing
                     ? const Center(child: CircularProgressIndicator())
                     //ListView.builderはwidget分割して外に出すとエラーになってしまうので、ここに記載すること！！
-                //ページ開いた時にConsumer１度まわるのでここでFuture.Builderしたら冒頭のgetNewsいらない？？
+                    //ページ開いた時にConsumer１度まわるのでここでFuture.Builderしたら冒頭のgetNewsいらない？？
                     //開いた時：カテゴリ総合でgetNews、それ以外:NewsItem
                     //=>引数SearchTypeの場合わけがめんどくさそうなので、冒頭で開いた時に限定してgetNews
                     : ListView.builder(
@@ -54,7 +72,7 @@ class NewsListPage extends StatelessWidget {
                           return NewsItem(
                             eachArticle: model.articles[index],
                             //タップでwebページへ
-                        // (article)はwidget分割先から返ってきたeachArticle(元々こっちから渡した値やけど)
+                            // (article)はwidget分割先から返ってきたeachArticle(元々こっちから渡した値やけど)
                             onArticleTapped: (article) =>
                                 _openWebPage(context, article),
                           );
@@ -83,11 +101,29 @@ class NewsListPage extends StatelessWidget {
 
   //キーワード検索(keywordはSearchBarに入力した文字)
   Future<void> getKeywordNews(BuildContext context, String keyword) async {
-    print('keyword:$keyword');
+//    print('keyword:$keyword');
+  //ここだけページを写す時に再描画?
     final viewModel = Provider.of<NewsListViewModel>(context, listen: false);
 
+    //バリデーションしてからgetNews
+//    viewModel.setValidate();
+    await viewModel.validateKeyword();//入力が空かどうか
+    if(viewModel.keywordController.text.isNotEmpty){//入力が空だったらデータ取得しない
+      await viewModel.getNews(
+          searchType: SearchType.keywordSearch, keyword: keyword);
+    }
+
+
+
+
+  }
+
+  Future<void> updateValidateKeyword(
+      BuildContext context, String updateKeyword) async {
+    final viewModel = Provider.of<NewsListViewModel>(context,listen: false);
+    await viewModel.updateValidateKeyword();
     await viewModel.getNews(
-        searchType: SearchType.keywordSearch, keyword: keyword);
+        searchType: SearchType.keywordSearch, keyword: updateKeyword);
   }
 
   //カテゴリ検索
@@ -102,8 +138,13 @@ class NewsListPage extends StatelessWidget {
   //タップでwebページへ
   void _openWebPage(BuildContext context, Article article) {
 //    print('ページ開くよ：${article.url}');
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context)=>WebViewScreen(article: article,),
-    ),);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WebViewScreen(
+          article: article,
+        ),
+      ),
+    );
   }
 }
